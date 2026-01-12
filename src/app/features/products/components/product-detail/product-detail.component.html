@@ -1,0 +1,85 @@
+<div class="product-detail">
+  @if (loading) {
+    <app-loading-spinner></app-loading-spinner>
+  }
+
+  @if (error) {
+    <div class="error-container">
+      <h2>Error</h2>
+      <p>{{ error }}</p>
+      <button (click)="goBack()" class="btn-secondary">Go Back</button>
+    </div>
+  }
+
+  @if (product && !loading) {
+    <div class="detail-header">
+      <button (click)="goBack()" class="btn-back">← Back to Products</button>
+      <div class="actions">
+        <button (click)="editProduct()" class="btn-primary">Edit</button>
+        <button (click)="deleteProduct()" class="btn-danger">Delete</button>
+      </div>
+    </div>
+
+    <div class="detail-content">
+      <div class="product-image">
+        <div class="image-placeholder">
+          <span>{{ product.name.charAt(0).toUpperCase() }}</span>
+        </div>
+      </div>
+
+      <div class="product-info">
+        <h1>{{ product.name }}</h1>
+        
+        <div class="status-badge">
+          @if (product.isActive) {
+            <span class="badge-success">Active</span>
+          } @else {
+            <span class="badge-inactive">Inactive</span>
+          }
+          
+          @if (product.isInStock()) {
+            <span class="badge-success">In Stock</span>
+          } @else {
+            <span class="badge-danger">Out of Stock</span>
+          }
+        </div>
+
+        <div class="price-section">
+          <span class="price">{{ product.price | currency }}</span>
+          <span class="sku">SKU: {{ product.sku }}</span>
+        </div>
+
+        @if (product.description) {
+          <div class="description-section">
+            <h3>Description</h3>
+            <p>{{ product.description }}</p>
+          </div>
+        }
+
+        <div class="details-grid">
+          <div class="detail-item">
+            <span class="label">Stock Quantity</span>
+            <span class="value">{{ product.stockQuantity }}</span>
+          </div>
+
+          @if (product.categoryId) {
+            <div class="detail-item">
+              <span class="label">Category ID</span>
+              <span class="value">{{ product.categoryId }}</span>
+            </div>
+          }
+
+          <div class="detail-item">
+            <span class="label">Created</span>
+            <span class="value">{{ product.createdAt | date:'medium' }}</span>
+          </div>
+
+          <div class="detail-item">
+            <span class="label">Last Updated</span>
+            <span class="value">{{ product.updatedAt | date:'medium' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

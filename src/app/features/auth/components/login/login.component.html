@@ -1,0 +1,62 @@
+<div class="login-container">
+  <div class="login-card">
+    <h2>Login</h2>
+    <p class="subtitle">Sign in to your account</p>
+
+    @if (error) {
+      <div class="error-message">
+        {{ error }}
+      </div>
+    }
+
+    <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          [(ngModel)]="username"
+          required
+          #usernameInput="ngModel"
+          [class.invalid]="usernameInput.invalid && usernameInput.touched"
+        />
+        @if (usernameInput.invalid && usernameInput.touched) {
+          <span class="error-text">Username is required</span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          [(ngModel)]="password"
+          required
+          #passwordInput="ngModel"
+          [class.invalid]="passwordInput.invalid && passwordInput.touched"
+        />
+        @if (passwordInput.invalid && passwordInput.touched) {
+          <span class="error-text">Password is required</span>
+        }
+      </div>
+
+      <button
+        type="submit"
+        class="btn-primary"
+        [disabled]="loginForm.invalid || loading"
+      >
+        @if (loading) {
+          <span>Logging in...</span>
+        } @else {
+          <span>Login</span>
+        }
+      </button>
+    </form>
+
+    <div class="footer">
+      <p>Don't have an account? <a routerLink="/auth/register">Register</a></p>
+    </div>
+  </div>
+</div>

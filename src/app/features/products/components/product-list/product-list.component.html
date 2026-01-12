@@ -1,0 +1,67 @@
+<div class="product-list">
+  <div class="header">
+    <h2>Products</h2>
+    <button (click)="createProduct()" class="btn-primary">
+      Create Product
+    </button>
+  </div>
+
+  <div class="search">
+    <input
+      type="text"
+      placeholder="Search products..."
+      [(ngModel)]="searchTerm"
+      (input)="onSearch()"
+    />
+  </div>
+
+  @if (loading) {
+    <div class="loading">Loading...</div>
+  }
+
+  @if (error) {
+    <div class="error">{{ error }}</div>
+  }
+
+  <div class="products-grid">
+    @for (product of products; track product.id) {
+      <div class="product-card" (click)="viewProduct(product.id)">
+        <h3>{{ product.name }}</h3>
+        <p class="price">{{ product.price | currency }}</p>
+        <p class="sku">SKU: {{ product.sku }}</p>
+        <p class="stock">
+          Stock: {{ product.stockQuantity }}
+          @if (product.isInStock()) {
+            <span class="badge-success">In Stock</span>
+          } @else {
+            <span class="badge-danger">Out of Stock</span>
+          }
+        </p>
+        @if (product.description) {
+          <p class="description">{{ product.description }}</p>
+        }
+      </div>
+    }
+  </div>
+
+  @if (paginatedResult) {
+    <div class="pagination">
+      <button
+        (click)="previousPage()"
+        [disabled]="!paginatedResult.hasPreviousPage"
+      >
+        Previous
+      </button>
+      <span>
+        Page {{ paginatedResult.pageNumber }} of {{ paginatedResult.totalPages }}
+        ({{ paginatedResult.totalCount }} total)
+      </span>
+      <button
+        (click)="nextPage()"
+        [disabled]="!paginatedResult.hasNextPage"
+      >
+        Next
+      </button>
+    </div>
+  }
+</div>

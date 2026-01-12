@@ -1,0 +1,130 @@
+<div class="product-form-container">
+  <div class="form-card">
+    <h2>{{ isEditMode ? 'Edit Product' : 'Create Product' }}</h2>
+
+    @if (error) {
+      <div class="error-message">{{ error }}</div>
+    }
+
+    <form (ngSubmit)="onSubmit()" #productForm="ngForm">
+      <div class="form-group">
+        <label for="name">Product Name *</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          [(ngModel)]="formData.name"
+          required
+          #nameInput="ngModel"
+          [class.invalid]="nameInput.invalid && nameInput.touched"
+        />
+        @if (nameInput.invalid && nameInput.touched) {
+          <span class="error-text">Product name is required</span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="sku">SKU *</label>
+        <input
+          type="text"
+          id="sku"
+          name="sku"
+          [(ngModel)]="formData.sku"
+          required
+          #skuInput="ngModel"
+          [class.invalid]="skuInput.invalid && skuInput.touched"
+        />
+        @if (skuInput.invalid && skuInput.touched) {
+          <span class="error-text">SKU is required</span>
+        }
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="price">Price *</label>
+          <input
+            type="number"
+            id="price"
+            name="price"
+            [(ngModel)]="formData.price"
+            required
+            min="0"
+            step="0.01"
+            #priceInput="ngModel"
+            [class.invalid]="priceInput.invalid && priceInput.touched"
+          />
+          @if (priceInput.invalid && priceInput.touched) {
+            <span class="error-text">Valid price is required</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="stockQuantity">Stock Quantity *</label>
+          <input
+            type="number"
+            id="stockQuantity"
+            name="stockQuantity"
+            [(ngModel)]="formData.stockQuantity"
+            required
+            min="0"
+            #stockInput="ngModel"
+            [class.invalid]="stockInput.invalid && stockInput.touched"
+          />
+          @if (stockInput.invalid && stockInput.touched) {
+            <span class="error-text">Stock quantity is required</span>
+          }
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea
+          id="description"
+          name="description"
+          [(ngModel)]="formData.description"
+          rows="4"
+        ></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="categoryId">Category ID</label>
+        <input
+          type="text"
+          id="categoryId"
+          name="categoryId"
+          [(ngModel)]="formData.categoryId"
+        />
+      </div>
+
+      @if (isEditMode) {
+        <div class="form-group checkbox-group">
+          <label>
+            <input
+              type="checkbox"
+              name="isActive"
+              [(ngModel)]="formData.isActive"
+            />
+            <span>Active</span>
+          </label>
+        </div>
+      }
+
+      <div class="form-actions">
+        <button type="button" (click)="cancel()" class="btn-secondary">
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="btn-primary"
+          [disabled]="productForm.invalid || loading"
+        >
+          @if (loading) {
+            <span>Saving...</span>
+          } @else {
+            <span>{{ isEditMode ? 'Update' : 'Create' }} Product</span>
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
