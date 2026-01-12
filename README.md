@@ -155,15 +155,153 @@ Build artifacts are stored in the `dist/` directory.
 
 ### Testing
 
+The project uses **Vitest** as the testing framework with full Angular testing utilities support.
+
+#### Run Tests
+
 ```bash
-# Unit tests with Vitest
-ng test
+# Run all tests
+npm test
 
-# E2E tests
-ng e2e
+# Run tests in watch mode
+npm test -- --watch
 
-# With coverage
-ng test --code-coverage
+# Run tests with coverage
+npm test -- --coverage
+
+# Run specific test file
+npm test -- product.entity.spec.ts
+
+# Run tests matching pattern
+npm test -- --grep="LoginComponent"
+```
+
+#### Test Structure
+
+All tests follow the `.spec.ts` naming convention and are co-located with their source files:
+
+```
+src/app/
+├── core/
+│   ├── entities/
+│   │   ├── product.entity.ts
+│   │   └── product.entity.spec.ts     ✓ Tests domain logic
+│   └── models/
+│       ├── result.model.ts
+│       └── result.model.spec.ts       ✓ Tests result pattern
+│
+├── infrastructure/
+│   ├── services/
+│   │   ├── token.service.ts
+│   │   └── token.service.spec.ts      ✓ Tests token management
+│   └── repositories/
+│       └── *.spec.ts                  ✓ Tests HTTP operations
+│
+├── features/
+│   ├── products/
+│   │   └── components/
+│   │       └── *.spec.ts              ✓ Tests components
+│   └── auth/
+│       └── components/
+│           └── login.component.spec.ts ✓ Tests authentication
+│
+└── shared/
+    ├── guards/
+    │   └── auth.guard.spec.ts         ✓ Tests route protection
+    ├── pipes/
+    │   └── truncate.pipe.spec.ts      ✓ Tests data transformation
+    └── directives/
+        └── has-role.directive.spec.ts ✓ Tests authorization
+```
+
+#### Test Coverage
+
+The test suite includes:
+
+- **Core Layer Tests** (70+ tests)
+  - Entity validation and business logic
+  - Result pattern (success/failure scenarios)
+  - Paginated results
+
+- **Infrastructure Tests** (60+ tests)
+  - Token service (JWT parsing, expiration)
+  - Storage service (localStorage abstraction)
+  - HTTP repositories (mocked HTTP calls)
+
+- **Feature Tests** (50+ tests)
+  - Component initialization and lifecycle
+  - User interactions (forms, buttons, navigation)
+  - Service integration
+  - Error handling
+
+- **Shared Tests** (40+ tests)
+  - Guards (authentication, authorization)
+  - Pipes (truncate text)
+  - Directives (conditional rendering)
+
+#### Coverage Reports
+
+After running tests with coverage, view the HTML report:
+
+```bash
+npm test -- --coverage
+# Open coverage/index.html in your browser
+```
+
+Target coverage goals:
+- **Statements**: > 80%
+- **Branches**: > 75%
+- **Functions**: > 80%
+- **Lines**: > 80%
+
+#### Testing Best Practices
+
+1. **Unit Tests**: Test individual components, services, and functions in isolation
+2. **Mock Dependencies**: Use `vi.fn()` to mock services and external dependencies
+3. **Test Behavior**: Focus on what the code does, not how it does it
+4. **Descriptive Names**: Use clear test descriptions (it should...)
+5. **Arrange-Act-Assert**: Structure tests with clear setup, execution, and verification
+6. **Edge Cases**: Test error scenarios, null values, and boundary conditions
+
+#### Writing New Tests
+
+Example test structure:
+
+```typescript
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { TestBed } from '@angular/core/testing';
+
+describe('MyComponent', () => {
+  let component: MyComponent;
+  let mockService: MyService;
+
+  beforeEach(() => {
+    mockService = {
+      getData: vi.fn()
+    };
+
+    TestBed.configureTestingModule({
+      providers: [
+        MyComponent,
+        { provide: MyService, useValue: mockService }
+      ]
+    });
+
+    component = TestBed.inject(MyComponent);
+  });
+
+  it('should create', () => {
+    expect(component).toBeDefined();
+  });
+
+  it('should load data on init', () => {
+    vi.spyOn(mockService, 'getData').mockReturnValue(of([]));
+    
+    component.ngOnInit();
+    
+    expect(mockService.getData).toHaveBeenCalled();
+  });
+});
 ```
 
 ## 🐛 Troubleshooting
