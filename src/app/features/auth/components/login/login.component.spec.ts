@@ -246,11 +246,17 @@ describe('LoginComponent', () => {
       component.username = 'user';
       component.password = 'password';
 
+      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {
+        // no-op
+      });
+
       vi.spyOn(authService, 'login').mockReturnValue(throwError(() => new Error('Error')));
 
       component.onSubmit();
 
       expect(component.loading).toBe(false);
+
+      consoleErrorSpy.mockRestore();
     });
 
     it('should not navigate on failed login', () => {
