@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { TemplateRef, ViewContainerRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { User } from '@core';
+import { AuthService } from '@features/auth';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { User } from '../../core';
-import { AuthService } from '../../features/auth';
 import { HasRoleDirective } from './has-role.directive';
 
 describe('HasRoleDirective', () => {
@@ -13,13 +14,13 @@ describe('HasRoleDirective', () => {
 
   beforeEach(() => {
     const authServiceMock = {
-      getCurrentUser: vi.fn()
+      getCurrentUser: vi.fn(),
     };
 
     const templateRefMock = {} as TemplateRef<any>;
     const viewContainerMock = {
       createEmbeddedView: vi.fn(),
-      clear: vi.fn()
+      clear: vi.fn(),
     };
 
     TestBed.configureTestingModule({
@@ -27,8 +28,8 @@ describe('HasRoleDirective', () => {
         HasRoleDirective,
         { provide: AuthService, useValue: authServiceMock },
         { provide: TemplateRef, useValue: templateRefMock },
-        { provide: ViewContainerRef, useValue: viewContainerMock }
-      ]
+        { provide: ViewContainerRef, useValue: viewContainerMock },
+      ],
     });
 
     directive = TestBed.inject(HasRoleDirective);
@@ -46,7 +47,7 @@ describe('HasRoleDirective', () => {
       id: '1',
       username: 'admin',
       email: 'admin@test.com',
-      roles: ['Admin']
+      roles: ['Admin'],
     });
 
     vi.spyOn(authService, 'getCurrentUser').mockReturnValue(mockUser);
@@ -64,7 +65,7 @@ describe('HasRoleDirective', () => {
       id: '1',
       username: 'user',
       email: 'user@test.com',
-      roles: ['User']
+      roles: ['User'],
     });
 
     vi.spyOn(authService, 'getCurrentUser').mockReturnValue(mockUser);
@@ -104,7 +105,7 @@ describe('HasRoleDirective', () => {
       id: '1',
       username: 'admin',
       email: 'admin@test.com',
-      roles: ['Admin']
+      roles: ['Admin'],
     });
 
     vi.spyOn(authService, 'getCurrentUser').mockReturnValue(mockUser);
@@ -122,7 +123,7 @@ describe('HasRoleDirective', () => {
       id: '1',
       username: 'admin',
       email: 'admin@test.com',
-      roles: ['Admin']
+      roles: ['Admin'],
     });
 
     vi.spyOn(authService, 'getCurrentUser').mockReturnValue(mockUser);
@@ -143,7 +144,7 @@ describe('HasRoleDirective', () => {
       id: '1',
       username: 'user',
       email: 'user@test.com',
-      roles: ['User']
+      roles: ['User'],
     });
 
     vi.spyOn(authService, 'getCurrentUser').mockReturnValue(mockUser);

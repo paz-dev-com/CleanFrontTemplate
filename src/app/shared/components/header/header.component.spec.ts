@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import { User } from '@core';
+import { AuthService } from '@features/auth';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { User } from '../../../core';
-import { AuthService } from '../../../features/auth';
 import { HeaderComponent } from './header.component';
 
 describe('HeaderComponent', () => {
@@ -14,19 +15,19 @@ describe('HeaderComponent', () => {
     const authServiceMock = {
       isAuthenticated: vi.fn(),
       getCurrentUser: vi.fn(),
-      logout: vi.fn()
+      logout: vi.fn(),
     };
 
     const routerMock = {
-      navigate: vi.fn()
+      navigate: vi.fn(),
     };
 
     TestBed.configureTestingModule({
       providers: [
         HeaderComponent,
         { provide: AuthService, useValue: authServiceMock },
-        { provide: Router, useValue: routerMock }
-      ]
+        { provide: Router, useValue: routerMock },
+      ],
     });
 
     component = TestBed.inject(HeaderComponent);
@@ -62,7 +63,7 @@ describe('HeaderComponent', () => {
         email: 'john@test.com',
         firstName: 'John',
         lastName: 'Doe',
-        roles: ['User']
+        roles: ['User'],
       });
 
       vi.spyOn(authService, 'getCurrentUser').mockReturnValue(user);
@@ -75,7 +76,7 @@ describe('HeaderComponent', () => {
         id: '1',
         username: 'johndoe',
         email: 'john@test.com',
-        roles: ['User']
+        roles: ['User'],
       });
 
       vi.spyOn(authService, 'getCurrentUser').mockReturnValue(user);
@@ -102,7 +103,7 @@ describe('HeaderComponent', () => {
         email: 'john@test.com',
         firstName: 'John',
         lastName: 'Doe',
-        roles: ['User']
+        roles: ['User'],
       });
 
       vi.spyOn(authService, 'getCurrentUser').mockReturnValue(user);

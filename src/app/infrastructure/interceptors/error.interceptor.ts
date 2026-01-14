@@ -24,13 +24,16 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
           status: error.status,
           statusText: error.statusText,
           url: error.url,
-          error: error.error
+          error: error.error,
         });
 
         switch (error.status) {
           case 0:
-            errorMessage = 'Cannot connect to server. Check if the API is running and CORS is configured.';
-            console.error('Network error - possible causes: API not running, CORS issue, or SSL certificate problem');
+            errorMessage =
+              'Cannot connect to server. Check if the API is running and CORS is configured.';
+            console.error(
+              'Network error - possible causes: API not running, CORS issue, or SSL certificate problem'
+            );
             break;
           case 401:
             errorMessage = 'Unauthorized - Please login';

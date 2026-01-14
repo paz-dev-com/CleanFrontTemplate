@@ -1,4 +1,5 @@
 import { InjectionToken } from '@angular/core';
+import { TokenPayload } from '@core';
 
 /**
  * Token service interface
@@ -9,7 +10,7 @@ export interface ITokenService {
   setToken(token: string): void;
   removeToken(): void;
   isTokenExpired(): boolean;
-  getTokenPayload(): any;
+  getTokenPayload(): TokenPayload | null;
 }
 
 /**

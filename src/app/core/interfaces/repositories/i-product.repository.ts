@@ -1,8 +1,6 @@
 import { InjectionToken } from '@angular/core';
+import { PaginatedResult, Product, Result } from '@core';
 import { Observable } from 'rxjs';
-import { Product } from '../../entities/product.entity';
-import { PaginatedResult } from '../../models/paginated-result.model';
-import { Result } from '../../models/result.model';
 import { IBaseRepository } from './i-base.repository';
 
 /**
@@ -10,8 +8,16 @@ import { IBaseRepository } from './i-base.repository';
  * Abstraction for product data access
  */
 export interface IProductRepository extends IBaseRepository<Product> {
-  search(searchTerm: string, pageNumber?: number, pageSize?: number): Observable<Result<PaginatedResult<Product>>>;
-  getByCategory(categoryId: string, pageNumber?: number, pageSize?: number): Observable<Result<PaginatedResult<Product>>>;
+  search(
+    searchTerm: string,
+    pageNumber?: number,
+    pageSize?: number
+  ): Observable<Result<PaginatedResult<Product>>>;
+  getByCategory(
+    categoryId: string,
+    pageNumber?: number,
+    pageSize?: number
+  ): Observable<Result<PaginatedResult<Product>>>;
 }
 
 /**

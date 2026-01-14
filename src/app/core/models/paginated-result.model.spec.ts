@@ -23,7 +23,7 @@ describe('PaginatedResult Model', () => {
         totalPages: 5,
         totalCount: 100,
         hasPreviousPage: true,
-        hasNextPage: true
+        hasNextPage: true,
       };
 
       const result = new PaginatedResult<string>(data);
@@ -41,7 +41,7 @@ describe('PaginatedResult Model', () => {
       const result = new PaginatedResult<number>({
         items: [1, 2, 3],
         pageNumber: 1,
-        totalCount: 3
+        totalCount: 3,
       });
 
       expect(result.items).toEqual([1, 2, 3]);
@@ -61,7 +61,7 @@ describe('PaginatedResult Model', () => {
         totalPages: 3,
         totalCount: 30,
         hasPreviousPage: false,
-        hasNextPage: true
+        hasNextPage: true,
       });
 
       expect(result.hasPreviousPage).toBe(false);
@@ -76,7 +76,7 @@ describe('PaginatedResult Model', () => {
         totalPages: 3,
         totalCount: 30,
         hasPreviousPage: true,
-        hasNextPage: true
+        hasNextPage: true,
       });
 
       expect(result.hasPreviousPage).toBe(true);
@@ -91,7 +91,7 @@ describe('PaginatedResult Model', () => {
         totalPages: 3,
         totalCount: 30,
         hasPreviousPage: true,
-        hasNextPage: false
+        hasNextPage: false,
       });
 
       expect(result.hasPreviousPage).toBe(true);
@@ -106,7 +106,7 @@ describe('PaginatedResult Model', () => {
         totalPages: 1,
         totalCount: 3,
         hasPreviousPage: false,
-        hasNextPage: false
+        hasNextPage: false,
       });
 
       expect(result.hasPreviousPage).toBe(false);
@@ -123,7 +123,7 @@ describe('PaginatedResult Model', () => {
 
       const products: Product[] = [
         { id: '1', name: 'Product 1' },
-        { id: '2', name: 'Product 2' }
+        { id: '2', name: 'Product 2' },
       ];
 
       const result = new PaginatedResult<Product>({
@@ -133,7 +133,7 @@ describe('PaginatedResult Model', () => {
         totalCount: 2,
         totalPages: 1,
         hasPreviousPage: false,
-        hasNextPage: false
+        hasNextPage: false,
       });
 
       expect(result.items).toEqual(products);
@@ -143,7 +143,7 @@ describe('PaginatedResult Model', () => {
     it('should work with primitive types', () => {
       const numbers = new PaginatedResult<number>({
         items: [1, 2, 3, 4, 5],
-        totalCount: 5
+        totalCount: 5,
       });
 
       expect(numbers.items).toEqual([1, 2, 3, 4, 5]);
@@ -159,7 +159,7 @@ describe('PaginatedResult Model', () => {
         totalPages: 0,
         totalCount: 0,
         hasPreviousPage: false,
-        hasNextPage: false
+        hasNextPage: false,
       });
 
       expect(result.items).toEqual([]);

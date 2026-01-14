@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import { Result, User } from '@core';
+import { AuthService } from '@features/auth';
 import { of, throwError } from 'rxjs';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { Result, User } from '../../../../core';
-import { AuthService } from '../../services/auth.service';
 import { LoginComponent } from './login.component';
 
 describe('LoginComponent', () => {
@@ -13,25 +14,25 @@ describe('LoginComponent', () => {
 
   beforeEach(() => {
     const authServiceMock = {
-      login: vi.fn()
+      login: vi.fn(),
     };
 
     const routerMock = {
-      navigate: vi.fn()
+      navigate: vi.fn(),
     };
 
     TestBed.configureTestingModule({
       providers: [
         LoginComponent,
         { provide: AuthService, useValue: authServiceMock },
-        { provide: Router, useValue: routerMock }
-      ]
+        { provide: Router, useValue: routerMock },
+      ],
     });
 
     component = TestBed.inject(LoginComponent);
     authService = TestBed.inject(AuthService);
     router = TestBed.inject(Router);
-    
+
     // Clear session storage before each test
     sessionStorage.clear();
   });
@@ -86,17 +87,24 @@ describe('LoginComponent', () => {
     it('should set loading to true when submitting', () => {
       component.username = 'user';
       component.password = 'password';
-      
+
       let subscriptionCalled = false;
-      const mockResponse = { token: 'test-token', user: new User({ id: '1', username: 'user', email: 'user@test.com', roles: ['User'] }) };
+      const mockResponse = {
+        token: 'test-token',
+        user: new User({ id: '1', username: 'user', email: 'user@test.com', roles: ['User'] }),
+      };
       vi.spyOn(authService, 'login').mockReturnValue({
         subscribe: (observer: any) => {
           // Check loading state before calling observer
           expect(component.loading).toBe(true);
           subscriptionCalled = true;
           observer.next(Result.success(mockResponse));
-          return { unsubscribe: () => {} };
-        }
+          return {
+            unsubscribe: () => {
+              /* no-op */
+            },
+          };
+        },
       } as any);
 
       component.onSubmit();
@@ -108,8 +116,11 @@ describe('LoginComponent', () => {
       component.username = 'user';
       component.password = 'password';
       component.error = 'Previous error';
-      
-      const mockResponse = { token: 'test-token', user: new User({ id: '1', username: 'user', email: 'user@test.com', roles: ['User'] }) };
+
+      const mockResponse = {
+        token: 'test-token',
+        user: new User({ id: '1', username: 'user', email: 'user@test.com', roles: ['User'] }),
+      };
       vi.spyOn(authService, 'login').mockReturnValue(of(Result.success(mockResponse)));
 
       component.onSubmit();
@@ -120,23 +131,29 @@ describe('LoginComponent', () => {
     it('should call login service with credentials', () => {
       component.username = 'testuser';
       component.password = 'testpass';
-      
-      const mockResponse = { token: 'test-token', user: new User({ id: '1', username: 'testuser', email: 'user@test.com', roles: ['User'] }) };
+
+      const mockResponse = {
+        token: 'test-token',
+        user: new User({ id: '1', username: 'testuser', email: 'user@test.com', roles: ['User'] }),
+      };
       vi.spyOn(authService, 'login').mockReturnValue(of(Result.success(mockResponse)));
 
       component.onSubmit();
 
       expect(authService.login).toHaveBeenCalledWith({
         username: 'testuser',
-        password: 'testpass'
+        password: 'testpass',
       });
     });
 
     it('should navigate to /products on successful login', () => {
       component.username = 'user';
       component.password = 'password';
-      
-      const mockResponse = { token: 'test-token', user: new User({ id: '1', username: 'user', email: 'user@test.com', roles: ['User'] }) };
+
+      const mockResponse = {
+        token: 'test-token',
+        user: new User({ id: '1', username: 'user', email: 'user@test.com', roles: ['User'] }),
+      };
       const navigateSpy = vi.spyOn(router, 'navigate');
       vi.spyOn(authService, 'login').mockReturnValue(of(Result.success(mockResponse)));
 
@@ -150,8 +167,11 @@ describe('LoginComponent', () => {
       sessionStorage.setItem('returnUrl', '/products/123');
       component.username = 'user';
       component.password = 'password';
-      
-      const mockResponse = { token: 'test-token', user: new User({ id: '1', username: 'user', email: 'user@test.com', roles: ['User'] }) };
+
+      const mockResponse = {
+        token: 'test-token',
+        user: new User({ id: '1', username: 'user', email: 'user@test.com', roles: ['User'] }),
+      };
       const navigateSpy = vi.spyOn(router, 'navigate');
       vi.spyOn(authService, 'login').mockReturnValue(of(Result.success(mockResponse)));
 
@@ -164,8 +184,11 @@ describe('LoginComponent', () => {
       sessionStorage.setItem('returnUrl', '/products/123');
       component.username = 'user';
       component.password = 'password';
-      
-      const mockResponse = { token: 'test-token', user: new User({ id: '1', username: 'user', email: 'user@test.com', roles: ['User'] }) };
+
+      const mockResponse = {
+        token: 'test-token',
+        user: new User({ id: '1', username: 'user', email: 'user@test.com', roles: ['User'] }),
+      };
       vi.spyOn(authService, 'login').mockReturnValue(of(Result.success(mockResponse)));
 
       component.onSubmit();
@@ -176,7 +199,7 @@ describe('LoginComponent', () => {
     it('should set error message on failed login', () => {
       component.username = 'user';
       component.password = 'wrongpassword';
-      
+
       vi.spyOn(authService, 'login').mockReturnValue(
         of(Result.failure<{ token: string; user: User }>('Invalid credentials'))
       );
@@ -190,7 +213,7 @@ describe('LoginComponent', () => {
     it('should set default error message when no error provided', () => {
       component.username = 'user';
       component.password = 'wrongpassword';
-      
+
       vi.spyOn(authService, 'login').mockReturnValue(
         of(Result.failure<{ token: string; user: User }>(null as any))
       );
@@ -204,28 +227,26 @@ describe('LoginComponent', () => {
     it('should handle service error', () => {
       component.username = 'user';
       component.password = 'password';
-      
-      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-      vi.spyOn(authService, 'login').mockReturnValue(
-        throwError(() => new Error('Network error'))
-      );
+
+      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {
+        /* no-op */
+      });
+      vi.spyOn(authService, 'login').mockReturnValue(throwError(() => new Error('Network error')));
 
       component.onSubmit();
 
       expect(component.error).toBe('An error occurred during login');
       expect(component.loading).toBe(false);
       expect(consoleErrorSpy).toHaveBeenCalled();
-      
+
       consoleErrorSpy.mockRestore();
     });
 
     it('should set loading to false after error', () => {
       component.username = 'user';
       component.password = 'password';
-      
-      vi.spyOn(authService, 'login').mockReturnValue(
-        throwError(() => new Error('Error'))
-      );
+
+      vi.spyOn(authService, 'login').mockReturnValue(throwError(() => new Error('Error')));
 
       component.onSubmit();
 
@@ -235,7 +256,7 @@ describe('LoginComponent', () => {
     it('should not navigate on failed login', () => {
       component.username = 'user';
       component.password = 'wrongpassword';
-      
+
       const navigateSpy = vi.spyOn(router, 'navigate');
       vi.spyOn(authService, 'login').mockReturnValue(
         of(Result.failure<{ token: string; user: User }>('Invalid credentials'))
@@ -252,14 +273,17 @@ describe('LoginComponent', () => {
 
       // Since the component checks for falsy, whitespace should pass
       // but in reality, backend would reject it
-      const mockResponse = { token: 'test-token', user: new User({ id: '1', username: '   ', email: 'user@test.com', roles: ['User'] }) };
+      const mockResponse = {
+        token: 'test-token',
+        user: new User({ id: '1', username: '   ', email: 'user@test.com', roles: ['User'] }),
+      };
       vi.spyOn(authService, 'login').mockReturnValue(of(Result.success(mockResponse)));
 
       component.onSubmit();
 
       expect(authService.login).toHaveBeenCalledWith({
         username: '   ',
-        password: 'password'
+        password: 'password',
       });
     });
   });

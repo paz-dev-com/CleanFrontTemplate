@@ -1,5 +1,5 @@
 import { Directive, Input, TemplateRef, ViewContainerRef, inject } from '@angular/core';
-import { AuthService } from '../../features/auth';
+import { AuthService } from '@features/auth';
 
 /**
  * Has Role Directive
@@ -8,11 +8,11 @@ import { AuthService } from '../../features/auth';
  */
 @Directive({
   selector: '[appHasRole]',
-  standalone: true
+  standalone: true,
 })
 export class HasRoleDirective {
   private readonly authService = inject(AuthService);
-  private readonly templateRef = inject(TemplateRef<any>);
+  private readonly templateRef = inject(TemplateRef<unknown>);
   private readonly viewContainer = inject(ViewContainerRef);
 
   @Input() set appHasRole(role: string) {

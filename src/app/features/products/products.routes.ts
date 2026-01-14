@@ -6,18 +6,18 @@ import { ProductListComponent } from './components/product-list/product-list.com
 export const PRODUCT_ROUTES: Routes = [
   {
     path: '',
-    component: ProductListComponent
+    component: ProductListComponent,
   },
   {
     path: 'create',
-    component: ProductFormComponent
+    component: ProductFormComponent,
   },
   {
     path: ':id',
-    component: ProductDetailComponent
+    component: ProductDetailComponent,
   },
   {
     path: ':id/edit',
-    component: ProductFormComponent
-  }
+    component: ProductFormComponent,
+  },
 ];

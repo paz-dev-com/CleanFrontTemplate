@@ -1,20 +1,17 @@
 import { getTestBed } from '@angular/core/testing';
 import {
-    BrowserDynamicTestingModule,
-    platformBrowserDynamicTesting
+  BrowserDynamicTestingModule,
+  platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
 import 'zone.js';
 import 'zone.js/testing';
 
 // Initialize Angular testing environment
-getTestBed().initTestEnvironment(
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting()
-);
+getTestBed().initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
 
 // Mock localStorage for tests
 const localStorageMock = (() => {
-  let store: Record<string, string> = {};
+  const store: Record<string, string> = {};
 
   return {
     getItem: (key: string) => store[key] || null,
@@ -26,18 +23,18 @@ const localStorageMock = (() => {
     },
     clear: () => {
       // Clear all keys rather than reassigning store
-      Object.keys(store).forEach(key => delete store[key]);
-    }
+      Object.keys(store).forEach((key) => delete store[key]);
+    },
   };
 })();
 
 Object.defineProperty(window, 'localStorage', {
-  value: localStorageMock
+  value: localStorageMock,
 });
 
 // Mock sessionStorage for tests
 const sessionStorageMock = (() => {
-  let store: Record<string, string> = {};
+  const store: Record<string, string> = {};
 
   return {
     getItem: (key: string) => store[key] || null,
@@ -49,11 +46,11 @@ const sessionStorageMock = (() => {
     },
     clear: () => {
       // Clear all keys rather than reassigning store
-      Object.keys(store).forEach(key => delete store[key]);
-    }
+      Object.keys(store).forEach((key) => delete store[key]);
+    },
   };
 })();
 
 Object.defineProperty(window, 'sessionStorage', {
-  value: sessionStorageMock
+  value: sessionStorageMock,
 });

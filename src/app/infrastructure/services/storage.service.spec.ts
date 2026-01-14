@@ -7,7 +7,7 @@ describe('StorageService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [StorageService]
+      providers: [StorageService],
     });
     service = TestBed.inject(StorageService);
     localStorage.clear();
@@ -54,7 +54,7 @@ describe('StorageService', () => {
       const complex = {
         user: { id: 1, name: 'John' },
         items: [{ id: 1 }, { id: 2 }],
-        settings: { theme: 'dark', language: 'en' }
+        settings: { theme: 'dark', language: 'en' },
       };
       localStorage.setItem('complex', JSON.stringify(complex));
       expect(service.get<typeof complex>('complex')).toEqual(complex);
@@ -107,7 +107,9 @@ describe('StorageService', () => {
 
     it('should handle storage errors gracefully', () => {
       // Mock localStorage.setItem to throw an error
-      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {
+        /* no-op */
+      });
       const setItemSpy = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
         throw new Error('Storage quota exceeded');
       });
@@ -136,7 +138,7 @@ describe('StorageService', () => {
       service.set('key1', 'value1');
       service.set('key2', 'value2');
       service.remove('key1');
-      
+
       expect(service.get('key1')).toBeNull();
       expect(service.get<string>('key2')).toBe('value2');
     });
@@ -147,9 +149,9 @@ describe('StorageService', () => {
       service.set('key1', 'value1');
       service.set('key2', 'value2');
       service.set('key3', 'value3');
-      
+
       service.clear();
-      
+
       expect(service.get('key1')).toBeNull();
       expect(service.get('key2')).toBeNull();
       expect(service.get('key3')).toBeNull();
@@ -164,7 +166,7 @@ describe('StorageService', () => {
       service.remove('key1');
       service.set('key2', 'value2');
       service.clear();
-      
+
       expect(service.get('key2')).toBeNull();
     });
   });
@@ -173,11 +175,11 @@ describe('StorageService', () => {
     it('should handle set, get, remove cycle', () => {
       localStorage.clear();
       const testData = { id: 1, name: 'Test' };
-      
+
       service.set('data', testData);
       const retrieved = service.get<typeof testData>('data');
       expect(retrieved).toEqual(testData);
-      
+
       service.remove('data');
       expect(service.get('data')).toBeNull();
     });
@@ -187,7 +189,7 @@ describe('StorageService', () => {
       service.set('user', { id: 1, name: 'John' });
       service.set('settings', { theme: 'dark' });
       service.set('token', 'abc123');
-      
+
       expect(service.get('user')).toEqual({ id: 1, name: 'John' });
       expect(service.get('settings')).toEqual({ theme: 'dark' });
       expect(service.get<string>('token')).toBe('abc123');

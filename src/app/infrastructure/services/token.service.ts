@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { ITokenService } from '../../core';
+import { ITokenService, TokenPayload } from '@core';
 
 /**
  * Token Service Implementation
  * Handles JWT token management using localStorage
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TokenService implements ITokenService {
   private readonly TOKEN_KEY = 'auth_token';
@@ -38,7 +38,7 @@ export class TokenService implements ITokenService {
     }
   }
 
-  getTokenPayload(): any {
+  getTokenPayload(): TokenPayload | null {
     const token = this.getToken();
     if (!token) return null;
 
@@ -48,7 +48,7 @@ export class TokenService implements ITokenService {
       const jsonPayload = decodeURIComponent(
         atob(base64)
           .split('')
-          .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+          .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
           .join('')
       );
       return JSON.parse(jsonPayload);
