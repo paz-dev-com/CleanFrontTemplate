@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { IStorageService } from '../../core';
+import { IStorageService } from '@core';
 
 /**
  * Storage Service Implementation
  * Abstracts localStorage operations
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class StorageService implements IStorageService {
   get<T>(key: string): T | null {

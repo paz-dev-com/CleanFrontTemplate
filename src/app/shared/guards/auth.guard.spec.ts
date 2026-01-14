@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import { AuthService } from '@features/auth';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { AuthService } from '../../features/auth';
 import { authGuard } from './auth.guard';
 
 describe('authGuard', () => {
@@ -10,18 +11,18 @@ describe('authGuard', () => {
 
   beforeEach(() => {
     const authServiceMock = {
-      isAuthenticated: vi.fn()
+      isAuthenticated: vi.fn(),
     };
 
     const routerMock = {
-      navigate: vi.fn()
+      navigate: vi.fn(),
     };
 
     TestBed.configureTestingModule({
       providers: [
         { provide: AuthService, useValue: authServiceMock },
-        { provide: Router, useValue: routerMock }
-      ]
+        { provide: Router, useValue: routerMock },
+      ],
     });
 
     authService = TestBed.inject(AuthService);
@@ -61,7 +62,7 @@ describe('authGuard', () => {
     TestBed.runInInjectionContext(() => authGuard(route, state));
 
     expect(navigateSpy).toHaveBeenCalledWith(['/auth/login'], {
-      queryParams: { returnUrl: '/products' }
+      queryParams: { returnUrl: '/products' },
     });
   });
 
@@ -75,7 +76,7 @@ describe('authGuard', () => {
     TestBed.runInInjectionContext(() => authGuard(route, state));
 
     expect(navigateSpy).toHaveBeenCalledWith(['/auth/login'], {
-      queryParams: { returnUrl: '/products/123' }
+      queryParams: { returnUrl: '/products/123' },
     });
   });
 
@@ -89,7 +90,7 @@ describe('authGuard', () => {
     TestBed.runInInjectionContext(() => authGuard(route, state));
 
     expect(navigateSpy).toHaveBeenCalledWith(['/auth/login'], {
-      queryParams: { returnUrl: '/' }
+      queryParams: { returnUrl: '/' },
     });
   });
 });

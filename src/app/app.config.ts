@@ -5,7 +5,13 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 
 // Core interfaces
-import { IAuthService, ICategoryRepository, IProductRepository, IStorageService, ITokenService } from './core';
+import {
+  IAuthService,
+  ICategoryRepository,
+  IProductRepository,
+  IStorageService,
+  ITokenService,
+} from './core';
 
 // Infrastructure implementations
 import { authInterceptor, errorInterceptor } from './infrastructure/interceptors';
@@ -20,9 +26,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    provideHttpClient(
-      withInterceptors([authInterceptor, errorInterceptor])
-    ),
+    provideHttpClient(withInterceptors([authInterceptor, errorInterceptor])),
 
     // Repository bindings (Core → Infrastructure)
     { provide: IProductRepository, useClass: ProductHttpRepository },
@@ -31,6 +35,6 @@ export const appConfig: ApplicationConfig = {
     // Service bindings (Core → Infrastructure)
     { provide: IAuthService, useClass: AuthHttpService },
     { provide: ITokenService, useClass: TokenService },
-    { provide: IStorageService, useClass: StorageService }
-  ]
+    { provide: IStorageService, useClass: StorageService },
+  ],
 };

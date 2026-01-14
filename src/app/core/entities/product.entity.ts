@@ -28,11 +28,7 @@ export class Product extends BaseEntity {
    * Domain validation
    */
   isValid(): boolean {
-    return (
-      this.name.length > 0 &&
-      this.price > 0 &&
-      this.sku.length > 0
-    );
+    return this.name.length > 0 && this.price > 0 && this.sku.length > 0;
   }
 
   /**

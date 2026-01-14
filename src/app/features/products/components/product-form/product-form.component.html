@@ -88,36 +88,21 @@
 
       <div class="form-group">
         <label for="categoryId">Category ID</label>
-        <input
-          type="text"
-          id="categoryId"
-          name="categoryId"
-          [(ngModel)]="formData.categoryId"
-        />
+        <input type="text" id="categoryId" name="categoryId" [(ngModel)]="formData.categoryId" />
       </div>
 
       @if (isEditMode) {
         <div class="form-group checkbox-group">
           <label>
-            <input
-              type="checkbox"
-              name="isActive"
-              [(ngModel)]="formData.isActive"
-            />
+            <input type="checkbox" name="isActive" [(ngModel)]="formData.isActive" />
             <span>Active</span>
           </label>
         </div>
       }
 
       <div class="form-actions">
-        <button type="button" (click)="cancel()" class="btn-secondary">
-          Cancel
-        </button>
-        <button
-          type="submit"
-          class="btn-primary"
-          [disabled]="productForm.invalid || loading"
-        >
+        <button type="button" (click)="cancel()" class="btn-secondary">Cancel</button>
+        <button type="submit" class="btn-primary" [disabled]="productForm.invalid || loading">
           @if (loading) {
             <span>Saving...</span>
           } @else {

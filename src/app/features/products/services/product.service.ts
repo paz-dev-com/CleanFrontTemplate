@@ -1,8 +1,13 @@
 import { Injectable, inject } from '@angular/core';
+import { IProductRepository, PaginatedResult, Product, Result } from '@core';
+import {
+  CreateProductCommand,
+  DeleteProductCommand,
+  GetProductByIdQuery,
+  GetProductsQuery,
+  UpdateProductCommand,
+} from '@features/products';
 import { Observable } from 'rxjs';
-import { IProductRepository, PaginatedResult, Product, Result } from '../../../core';
-import { CreateProductCommand, DeleteProductCommand, UpdateProductCommand } from '../commands';
-import { GetProductByIdQuery, GetProductsQuery } from '../queries';
 
 /**
  * Product Service (Use Case Handler)
@@ -10,7 +15,7 @@ import { GetProductByIdQuery, GetProductsQuery } from '../queries';
  * Depends ONLY on abstractions from Core layer
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProductService {
   private readonly productRepository = inject(IProductRepository);
@@ -19,11 +24,7 @@ export class ProductService {
 
   getProducts(query: GetProductsQuery): Observable<Result<PaginatedResult<Product>>> {
     if (query.searchTerm) {
-      return this.productRepository.search(
-        query.searchTerm,
-        query.pageNumber,
-        query.pageSize
-      );
+      return this.productRepository.search(query.searchTerm, query.pageNumber, query.pageSize);
     }
 
     if (query.categoryId) {
@@ -50,12 +51,12 @@ export class ProductService {
       price: command.price,
       sku: command.sku,
       categoryId: command.categoryId,
-      stockQuantity: command.stockQuantity
+      stockQuantity: command.stockQuantity,
     });
 
     // Domain validation
     if (!product.isValid()) {
-      return new Observable(observer => {
+      return new Observable((observer) => {
         observer.next(Result.failure('Invalid product data'));
         observer.complete();
       });
@@ -68,7 +69,7 @@ export class ProductService {
     const product = new Product(command);
 
     if (!product.isValid()) {
-      return new Observable(observer => {
+      return new Observable((observer) => {
         observer.next(Result.failure('Invalid product data'));
         observer.complete();
       });

@@ -1,9 +1,7 @@
 <div class="product-list">
   <div class="header">
     <h2>Products</h2>
-    <button (click)="createProduct()" class="btn-primary">
-      Create Product
-    </button>
+    <button (click)="createProduct()" class="btn-primary">Create Product</button>
   </div>
 
   <div class="search">
@@ -25,7 +23,13 @@
 
   <div class="products-grid">
     @for (product of products; track product.id) {
-      <div class="product-card" (click)="viewProduct(product.id)">
+      <div
+        class="product-card"
+        (click)="viewProduct(product.id)"
+        (keyup.enter)="viewProduct(product.id)"
+        role="button"
+        tabindex="0"
+      >
         <h3>{{ product.name }}</h3>
         <p class="price">{{ product.price | currency }}</p>
         <p class="sku">SKU: {{ product.sku }}</p>
@@ -46,22 +50,16 @@
 
   @if (paginatedResult) {
     <div class="pagination">
-      <button
-        (click)="previousPage()"
-        [disabled]="!paginatedResult.hasPreviousPage"
-      >
+      <button (click)="previousPage()" [disabled]="!paginatedResult.hasPreviousPage">
         Previous
       </button>
       <span>
-        Page {{ paginatedResult.pageNumber }} of {{ paginatedResult.totalPages }}
-        ({{ paginatedResult.totalCount }} total)
+        Page {{ paginatedResult.pageNumber }} of {{ paginatedResult.totalPages }} ({{
+          paginatedResult.totalCount
+        }}
+        total)
       </span>
-      <button
-        (click)="nextPage()"
-        [disabled]="!paginatedResult.hasNextPage"
-      >
-        Next
-      </button>
+      <button (click)="nextPage()" [disabled]="!paginatedResult.hasNextPage">Next</button>
     </div>
   }
 </div>

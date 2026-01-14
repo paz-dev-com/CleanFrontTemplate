@@ -6,7 +6,7 @@ describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
-      providers: appConfig.providers
+      providers: appConfig.providers,
     }).compileComponents();
   });
 

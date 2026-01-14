@@ -1,6 +1,5 @@
+import { PaginatedResult, Result } from '@core';
 import { Observable } from 'rxjs';
-import { PaginatedResult } from '../../models/paginated-result.model';
-import { Result } from '../../models/result.model';
 
 /**
  * Base repository interface

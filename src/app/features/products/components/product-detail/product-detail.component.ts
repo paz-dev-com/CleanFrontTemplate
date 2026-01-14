@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Product } from '../../../../core';
-import { LoadingSpinnerComponent } from '../../../../shared/components';
-import { ProductService } from '../../services/product.service';
+import { Product } from '@core';
+import { ProductService } from '@features/products';
+import { LoadingSpinnerComponent } from '@shared';
 
 /**
  * Product Detail Component
@@ -14,7 +14,7 @@ import { ProductService } from '../../services/product.service';
   standalone: true,
   imports: [CommonModule, LoadingSpinnerComponent],
   templateUrl: './product-detail.component.html',
-  styleUrls: ['./product-detail.component.scss']
+  styleUrls: ['./product-detail.component.scss'],
 })
 export class ProductDetailComponent implements OnInit {
   private readonly productService = inject(ProductService);
@@ -51,7 +51,7 @@ export class ProductDetailComponent implements OnInit {
         this.loading = false;
         this.error = 'An error occurred while loading the product';
         console.error(err);
-      }
+      },
     });
   }
 
@@ -76,7 +76,7 @@ export class ProductDetailComponent implements OnInit {
         error: (err) => {
           alert('An error occurred while deleting the product');
           console.error(err);
-        }
+        },
       });
     }
   }

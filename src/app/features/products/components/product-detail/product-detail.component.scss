@@ -30,7 +30,9 @@
   gap: 1rem;
 }
 
-.btn-primary, .btn-danger, .btn-secondary {
+.btn-primary,
+.btn-danger,
+.btn-secondary {
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 6px;
@@ -107,7 +109,9 @@
   margin-bottom: 1.5rem;
 }
 
-.badge-success, .badge-danger, .badge-inactive {
+.badge-success,
+.badge-danger,
+.badge-inactive {
   padding: 0.5rem 1rem;
   border-radius: 6px;
   font-size: 0.875rem;
@@ -217,7 +221,8 @@
     width: 100%;
   }
 
-  .btn-primary, .btn-danger {
+  .btn-primary,
+  .btn-danger {
     flex: 1;
   }
 

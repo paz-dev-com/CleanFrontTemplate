@@ -2,8 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CreateProductCommand, UpdateProductCommand } from '../../commands';
-import { ProductService } from '../../services/product.service';
+import { CreateProductCommand, ProductService, UpdateProductCommand } from '@features/products';
 
 /**
  * Product Form Component
@@ -14,7 +13,7 @@ import { ProductService } from '../../services/product.service';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './product-form.component.html',
-  styleUrls: ['./product-form.component.scss']
+  styleUrls: ['./product-form.component.scss'],
 })
 export class ProductFormComponent implements OnInit {
   private readonly productService = inject(ProductService);
@@ -32,7 +31,7 @@ export class ProductFormComponent implements OnInit {
     stockQuantity: 0,
     description: null as string | null,
     categoryId: null as string | null,
-    isActive: true
+    isActive: true,
   };
 
   ngOnInit(): void {
@@ -57,7 +56,7 @@ export class ProductFormComponent implements OnInit {
             stockQuantity: product.stockQuantity,
             description: product.description,
             categoryId: product.categoryId,
-            isActive: product.isActive
+            isActive: product.isActive,
           };
         } else {
           this.error = result.error || 'Failed to load product';
@@ -67,7 +66,7 @@ export class ProductFormComponent implements OnInit {
         this.loading = false;
         this.error = 'An error occurred while loading the product';
         console.error(err);
-      }
+      },
     });
   }
 
@@ -89,7 +88,7 @@ export class ProductFormComponent implements OnInit {
       price: this.formData.price,
       stockQuantity: this.formData.stockQuantity,
       description: this.formData.description,
-      categoryId: this.formData.categoryId
+      categoryId: this.formData.categoryId,
     };
 
     this.productService.createProduct(command).subscribe({
@@ -105,7 +104,7 @@ export class ProductFormComponent implements OnInit {
         this.loading = false;
         this.error = 'An error occurred while creating the product';
         console.error(err);
-      }
+      },
     });
   }
 
@@ -121,7 +120,7 @@ export class ProductFormComponent implements OnInit {
       stockQuantity: this.formData.stockQuantity,
       description: this.formData.description,
       categoryId: this.formData.categoryId,
-      isActive: this.formData.isActive
+      isActive: this.formData.isActive,
     };
 
     this.productService.updateProduct(command).subscribe({
@@ -137,7 +136,7 @@ export class ProductFormComponent implements OnInit {
         this.loading = false;
         this.error = 'An error occurred while updating the product';
         console.error(err);
-      }
+      },
     });
   }
 

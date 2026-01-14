@@ -33,7 +33,9 @@
   border: 1px solid #ddd;
   border-radius: 8px;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 }
 
 .product-card:hover {
@@ -95,7 +97,8 @@ button:disabled {
   cursor: not-allowed;
 }
 
-.loading, .error {
+.loading,
+.error {
   text-align: center;
   padding: 2rem;
   font-size: 1.2rem;

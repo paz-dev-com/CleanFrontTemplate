@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import { PaginatedResult, Product, Result } from '@core';
+import { ProductService } from '@features/products';
 import { of, throwError } from 'rxjs';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { PaginatedResult, Product, Result } from '../../../../core';
-import { ProductService } from '../../services/product.service';
 import { ProductListComponent } from './product-list.component';
 
 describe('ProductListComponent', () => {
@@ -13,19 +13,19 @@ describe('ProductListComponent', () => {
 
   beforeEach(() => {
     const productServiceMock = {
-      getProducts: vi.fn()
+      getProducts: vi.fn(),
     };
 
     const routerMock = {
-      navigate: vi.fn()
+      navigate: vi.fn(),
     };
 
     TestBed.configureTestingModule({
       providers: [
         ProductListComponent,
         { provide: ProductService, useValue: productServiceMock },
-        { provide: Router, useValue: routerMock }
-      ]
+        { provide: Router, useValue: routerMock },
+      ],
     });
 
     component = TestBed.inject(ProductListComponent);
@@ -62,12 +62,10 @@ describe('ProductListComponent', () => {
         totalCount: 0,
         totalPages: 0,
         hasPreviousPage: false,
-        hasNextPage: false
+        hasNextPage: false,
       });
 
-      vi.spyOn(productService, 'getProducts').mockReturnValue(
-        of(Result.success(mockResult))
-      );
+      vi.spyOn(productService, 'getProducts').mockReturnValue(of(Result.success(mockResult)));
 
       component.ngOnInit();
 
@@ -89,7 +87,7 @@ describe('ProductListComponent', () => {
 
     it('should clear error when loading', () => {
       component.error = 'Previous error';
-      
+
       vi.spyOn(productService, 'getProducts').mockReturnValue(
         of(Result.success(new PaginatedResult<Product>()))
       );
@@ -102,7 +100,7 @@ describe('ProductListComponent', () => {
     it('should load products successfully', () => {
       const mockProducts = [
         new Product({ id: '1', name: 'Product 1', price: 10, sku: 'SKU1' }),
-        new Product({ id: '2', name: 'Product 2', price: 20, sku: 'SKU2' })
+        new Product({ id: '2', name: 'Product 2', price: 20, sku: 'SKU2' }),
       ];
 
       const mockResult = new PaginatedResult<Product>({
@@ -112,12 +110,10 @@ describe('ProductListComponent', () => {
         totalCount: 2,
         totalPages: 1,
         hasPreviousPage: false,
-        hasNextPage: false
+        hasNextPage: false,
       });
 
-      vi.spyOn(productService, 'getProducts').mockReturnValue(
-        of(Result.success(mockResult))
-      );
+      vi.spyOn(productService, 'getProducts').mockReturnValue(of(Result.success(mockResult)));
 
       component.loadProducts();
 
@@ -138,7 +134,9 @@ describe('ProductListComponent', () => {
     });
 
     it('should handle service error', () => {
-      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {
+        /* no-op */
+      });
       vi.spyOn(productService, 'getProducts').mockReturnValue(
         throwError(() => new Error('Network error'))
       );
@@ -148,37 +146,37 @@ describe('ProductListComponent', () => {
       expect(component.error).toBe('An error occurred while loading products');
       expect(component.loading).toBe(false);
       expect(consoleErrorSpy).toHaveBeenCalled();
-      
+
       consoleErrorSpy.mockRestore();
     });
 
     it('should pass pagination parameters', () => {
-      const getProductsSpy = vi.spyOn(productService, 'getProducts').mockReturnValue(
-        of(Result.success(new PaginatedResult<Product>()))
-      );
+      const getProductsSpy = vi
+        .spyOn(productService, 'getProducts')
+        .mockReturnValue(of(Result.success(new PaginatedResult<Product>())));
 
       component.loadProducts();
 
       expect(getProductsSpy).toHaveBeenCalledWith({
         pageNumber: 1,
         pageSize: 10,
-        searchTerm: undefined
+        searchTerm: undefined,
       });
     });
 
     it('should pass search term when provided', () => {
       component.searchTerm = 'test';
-      
-      const getProductsSpy = vi.spyOn(productService, 'getProducts').mockReturnValue(
-        of(Result.success(new PaginatedResult<Product>()))
-      );
+
+      const getProductsSpy = vi
+        .spyOn(productService, 'getProducts')
+        .mockReturnValue(of(Result.success(new PaginatedResult<Product>())));
 
       component.loadProducts();
 
       expect(getProductsSpy).toHaveBeenCalledWith({
         pageNumber: 1,
         pageSize: 10,
-        searchTerm: 'test'
+        searchTerm: 'test',
       });
     });
   });
@@ -186,7 +184,7 @@ describe('ProductListComponent', () => {
   describe('onSearch', () => {
     it('should reset to first page', () => {
       component.searchTerm = 'test';
-      
+
       vi.spyOn(productService, 'getProducts').mockReturnValue(
         of(Result.success(new PaginatedResult<Product>()))
       );
@@ -199,9 +197,9 @@ describe('ProductListComponent', () => {
     });
 
     it('should reload products', () => {
-      const loadProductsSpy = vi.spyOn(productService, 'getProducts').mockReturnValue(
-        of(Result.success(new PaginatedResult<Product>()))
-      );
+      const loadProductsSpy = vi
+        .spyOn(productService, 'getProducts')
+        .mockReturnValue(of(Result.success(new PaginatedResult<Product>())));
 
       component.onSearch();
 
@@ -238,18 +236,16 @@ describe('ProductListComponent', () => {
         totalCount: 20,
         totalPages: 2,
         hasPreviousPage: false,
-        hasNextPage: true
+        hasNextPage: true,
       });
 
-      const loadProductsSpy = vi.spyOn(productService, 'getProducts').mockReturnValue(
-        of(Result.success(new PaginatedResult<Product>()))
-      );
+      const loadProductsSpy = vi
+        .spyOn(productService, 'getProducts')
+        .mockReturnValue(of(Result.success(new PaginatedResult<Product>())));
 
       component.nextPage();
 
-      expect(loadProductsSpy).toHaveBeenCalledWith(
-        expect.objectContaining({ pageNumber: 2 })
-      );
+      expect(loadProductsSpy).toHaveBeenCalledWith(expect.objectContaining({ pageNumber: 2 }));
     });
 
     it('should not load when hasNextPage is false', () => {
@@ -260,7 +256,7 @@ describe('ProductListComponent', () => {
         totalCount: 5,
         totalPages: 1,
         hasPreviousPage: false,
-        hasNextPage: false
+        hasNextPage: false,
       });
 
       const loadProductsSpy = vi.spyOn(productService, 'getProducts');
@@ -285,42 +281,48 @@ describe('ProductListComponent', () => {
     it('should load previous page when hasPreviousPage is true', () => {
       // First load products to initialize component state at page 1
       vi.spyOn(productService, 'getProducts').mockReturnValue(
-        of(Result.success(new PaginatedResult<Product>({
-          items: [],
-          pageNumber: 1,
-          pageSize: 10,
-          totalCount: 20,
-          totalPages: 2,
-          hasPreviousPage: false,
-          hasNextPage: true
-        })))
+        of(
+          Result.success(
+            new PaginatedResult<Product>({
+              items: [],
+              pageNumber: 1,
+              pageSize: 10,
+              totalCount: 20,
+              totalPages: 2,
+              hasPreviousPage: false,
+              hasNextPage: true,
+            })
+          )
+        )
       );
       component.ngOnInit();
-      
+
       // Now navigate to page 2
       vi.spyOn(productService, 'getProducts').mockReturnValue(
-        of(Result.success(new PaginatedResult<Product>({
-          items: [],
-          pageNumber: 2,
-          pageSize: 10,
-          totalCount: 20,
-          totalPages: 2,
-          hasPreviousPage: true,
-          hasNextPage: false
-        })))
+        of(
+          Result.success(
+            new PaginatedResult<Product>({
+              items: [],
+              pageNumber: 2,
+              pageSize: 10,
+              totalCount: 20,
+              totalPages: 2,
+              hasPreviousPage: true,
+              hasNextPage: false,
+            })
+          )
+        )
       );
       component.nextPage();
 
       // Finally test going back to page 1
-      const loadProductsSpy = vi.spyOn(productService, 'getProducts').mockReturnValue(
-        of(Result.success(new PaginatedResult<Product>()))
-      );
+      const loadProductsSpy = vi
+        .spyOn(productService, 'getProducts')
+        .mockReturnValue(of(Result.success(new PaginatedResult<Product>())));
 
       component.previousPage();
 
-      expect(loadProductsSpy).toHaveBeenCalledWith(
-        expect.objectContaining({ pageNumber: 1 })
-      );
+      expect(loadProductsSpy).toHaveBeenCalledWith(expect.objectContaining({ pageNumber: 1 }));
     });
 
     it('should not load when hasPreviousPage is false', () => {
@@ -331,7 +333,7 @@ describe('ProductListComponent', () => {
         totalCount: 5,
         totalPages: 1,
         hasPreviousPage: false,
-        hasNextPage: false
+        hasNextPage: false,
       });
 
       const loadProductsSpy = vi.spyOn(productService, 'getProducts');

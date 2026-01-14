@@ -1,7 +1,6 @@
 import { InjectionToken } from '@angular/core';
+import { Result, User } from '@core';
 import { Observable } from 'rxjs';
-import { User } from '../../entities/user.entity';
-import { Result } from '../../models/result.model';
 
 /**
  * Authentication service interface

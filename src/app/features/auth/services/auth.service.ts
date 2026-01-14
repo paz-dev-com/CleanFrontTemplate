@@ -1,14 +1,14 @@
 import { Injectable, inject } from '@angular/core';
+import { IAuthService, Result, User } from '@core';
+import { LoginCommand } from '@features/auth';
 import { Observable } from 'rxjs';
-import { IAuthService, Result, User } from '../../../core';
-import { LoginCommand } from '../commands';
 
 /**
  * Auth Service (Use Case Handler)
  * Orchestrates authentication business logic
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private readonly authService = inject(IAuthService);

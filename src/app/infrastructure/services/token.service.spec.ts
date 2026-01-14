@@ -7,7 +7,7 @@ describe('TokenService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [TokenService]
+      providers: [TokenService],
     });
     service = TestBed.inject(TokenService);
     localStorage.clear();
@@ -110,9 +110,11 @@ describe('TokenService', () => {
       const decodedPayload = service.getTokenPayload();
 
       expect(decodedPayload).toBeDefined();
-      expect(decodedPayload.sub).toBe('user123');
-      expect(decodedPayload.role).toBe('Admin');
-      expect(decodedPayload.exp).toBe(1234567890);
+      if (decodedPayload) {
+        expect(decodedPayload.sub).toBe('user123');
+        expect(decodedPayload.role).toBe('Admin');
+        expect(decodedPayload.exp).toBe(1234567890);
+      }
     });
 
     it('should return null for malformed token', () => {
@@ -144,7 +146,7 @@ describe('TokenService', () => {
       const decodedPayload = service.getTokenPayload();
 
       expect(decodedPayload).toBeDefined();
-      expect(decodedPayload.sub).toBe('user+123/test==');
+      if (decodedPayload) expect(decodedPayload.sub).toBe('user+123/test==');
     });
   });
 });

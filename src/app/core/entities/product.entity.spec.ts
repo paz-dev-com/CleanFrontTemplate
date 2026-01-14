@@ -26,7 +26,7 @@ describe('Product Entity', () => {
         isActive: false,
         stockQuantity: 50,
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
       };
 
       const product = new Product(productData);
@@ -42,10 +42,10 @@ describe('Product Entity', () => {
     });
 
     it('should handle partial data', () => {
-      const product = new Product({ name: 'Partial Product', price: 25.50 });
+      const product = new Product({ name: 'Partial Product', price: 25.5 });
 
       expect(product.name).toBe('Partial Product');
-      expect(product.price).toBe(25.50);
+      expect(product.price).toBe(25.5);
       expect(product.description).toBeNull();
       expect(product.sku).toBe('');
     });
@@ -55,8 +55,8 @@ describe('Product Entity', () => {
     it('should return true for valid product', () => {
       const product = new Product({
         name: 'Valid Product',
-        price: 10.00,
-        sku: 'SKU-001'
+        price: 10.0,
+        sku: 'SKU-001',
       });
 
       expect(product.isValid()).toBe(true);
@@ -65,8 +65,8 @@ describe('Product Entity', () => {
     it('should return false when name is empty', () => {
       const product = new Product({
         name: '',
-        price: 10.00,
-        sku: 'SKU-001'
+        price: 10.0,
+        sku: 'SKU-001',
       });
 
       expect(product.isValid()).toBe(false);
@@ -76,7 +76,7 @@ describe('Product Entity', () => {
       const product = new Product({
         name: 'Product',
         price: 0,
-        sku: 'SKU-001'
+        sku: 'SKU-001',
       });
 
       expect(product.isValid()).toBe(false);
@@ -85,8 +85,8 @@ describe('Product Entity', () => {
     it('should return false when price is negative', () => {
       const product = new Product({
         name: 'Product',
-        price: -5.00,
-        sku: 'SKU-001'
+        price: -5.0,
+        sku: 'SKU-001',
       });
 
       expect(product.isValid()).toBe(false);
@@ -95,8 +95,8 @@ describe('Product Entity', () => {
     it('should return false when sku is empty', () => {
       const product = new Product({
         name: 'Product',
-        price: 10.00,
-        sku: ''
+        price: 10.0,
+        sku: '',
       });
 
       expect(product.isValid()).toBe(false);
@@ -107,10 +107,10 @@ describe('Product Entity', () => {
     it('should return true when product is active and has stock', () => {
       const product = new Product({
         name: 'In Stock Product',
-        price: 10.00,
+        price: 10.0,
         sku: 'SKU-001',
         isActive: true,
-        stockQuantity: 10
+        stockQuantity: 10,
       });
 
       expect(product.isInStock()).toBe(true);
@@ -119,10 +119,10 @@ describe('Product Entity', () => {
     it('should return false when product is inactive', () => {
       const product = new Product({
         name: 'Inactive Product',
-        price: 10.00,
+        price: 10.0,
         sku: 'SKU-001',
         isActive: false,
-        stockQuantity: 10
+        stockQuantity: 10,
       });
 
       expect(product.isInStock()).toBe(false);
@@ -131,10 +131,10 @@ describe('Product Entity', () => {
     it('should return false when stock is zero', () => {
       const product = new Product({
         name: 'Out of Stock',
-        price: 10.00,
+        price: 10.0,
         sku: 'SKU-001',
         isActive: true,
-        stockQuantity: 0
+        stockQuantity: 0,
       });
 
       expect(product.isInStock()).toBe(false);
@@ -143,10 +143,10 @@ describe('Product Entity', () => {
     it('should return false when product is inactive and out of stock', () => {
       const product = new Product({
         name: 'Unavailable Product',
-        price: 10.00,
+        price: 10.0,
         sku: 'SKU-001',
         isActive: false,
-        stockQuantity: 0
+        stockQuantity: 0,
       });
 
       expect(product.isInStock()).toBe(false);

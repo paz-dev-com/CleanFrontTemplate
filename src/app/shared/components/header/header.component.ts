@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../../features/auth';
-import { HasRoleDirective } from '../../directives';
+import { AuthService } from '@features/auth';
+import { HasRoleDirective } from '@shared';
 
 /**
  * Header Component
@@ -13,7 +13,7 @@ import { HasRoleDirective } from '../../directives';
   standalone: true,
   imports: [CommonModule, RouterLink, HasRoleDirective],
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
   private readonly authService = inject(AuthService);

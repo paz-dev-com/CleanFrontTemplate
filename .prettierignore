@@ -1,0 +1,13 @@
+# Dependencies
+node_modules
+
+# Build outputs
+dist
+.angular
+
+# Coverage
+coverage
+
+# Misc
+*.log
+package-lock.json

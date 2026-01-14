@@ -1,5 +1,9 @@
 # Clean Architecture Angular Template
 
+[![CI](https://github.com/paz-dev-com/CleanFrontTemplate/actions/workflows/ci.yml/badge.svg)](https://github.com/paz-dev-com/CleanFrontTemplate/actions/workflows/ci.yml)
+[![CD](https://github.com/paz-dev-com/CleanFrontTemplate/actions/workflows/cd.yml/badge.svg)](https://github.com/paz-dev-com/CleanFrontTemplate/actions/workflows/cd.yml)
+[![CodeQL](https://github.com/paz-dev-com/CleanFrontTemplate/actions/workflows/codeql.yml/badge.svg)](https://github.com/paz-dev-com/CleanFrontTemplate/actions/workflows/codeql.yml)
+
 A production-ready Angular template following **Clean Architecture** principles, matching the structure of [CleanApiTemplate](https://github.com/paz-dev-com/CleanApiTemplate).
 
 ## 🚀 Quick Start
@@ -22,6 +26,7 @@ npm start
 The project follows **Clean Architecture** principles with four distinct layers:
 
 ### 1. **Core Layer** (Domain - Zero Dependencies)
+
 ```
 core/
 ├── entities/       # Product, Category, User, BaseEntity
@@ -29,11 +34,13 @@ core/
 ├── models/         # Result<T>, PaginatedResult<T>
 └── enums/          # UserRole enum
 ```
+
 - Pure business logic
 - No external dependencies
 - Defines contracts (interfaces) for outer layers
 
 ### 2. **Features Layer** (CQRS Pattern)
+
 - **Products Feature**
   - Commands: CreateProduct, UpdateProduct, DeleteProduct
   - Queries: GetProducts, GetProductById
@@ -46,12 +53,14 @@ core/
   - Token management
 
 ### 3. **Infrastructure Layer**
+
 - HTTP Repositories: ProductHttpRepository, CategoryHttpRepository
 - Services: TokenService, StorageService, AuthHttpService
 - Interceptors: Auth & Error handling
 - API communication layer
 
 ### 4. **Shared Layer**
+
 - Header component with navigation
 - Loading spinner component
 - Guards: authGuard, roleGuard
@@ -61,6 +70,7 @@ core/
 ## 📋 Features
 
 ### ✅ Authentication System
+
 - Login with form validation
 - JWT token management
 - Protected routes with auth guard
@@ -68,6 +78,7 @@ core/
 - Automatic token refresh
 
 ### ✅ Product Management (Full CRUD)
+
 - List products with pagination & search
 - View product details
 - Create new products
@@ -76,6 +87,7 @@ core/
 - Responsive grid layout
 
 ### ✅ Layout & Navigation
+
 - Header with navigation menu
 - User menu with logout
 - Responsive design
@@ -90,7 +102,7 @@ Update `src/environments/environment.ts`:
 ```typescript
 export const environment = {
   production: false,
-  apiUrl: 'https://localhost:7164/api' // Your backend API URL
+  apiUrl: 'https://localhost:7164/api', // Your backend API URL
 };
 ```
 
@@ -105,7 +117,57 @@ The app expects these backend endpoints:
 - `PUT /api/products/{id}` - Update product
 - `DELETE /api/products/{id}` - Delete product
 
-## 📦 Development
+## � CI/CD Pipeline
+
+This project includes comprehensive GitHub Actions workflows:
+
+### Continuous Integration (CI)
+
+- **Automated Testing**: Runs on every push and pull request
+- **Multi-Node Testing**: Tests against Node.js 20.x and 22.x
+- **Code Coverage**: Automatic coverage reports uploaded to Codecov
+- **Build Validation**: Ensures production builds succeed
+
+### Continuous Deployment (CD)
+
+- **Automatic Deployment**: Deploys to production on main branch push
+- **Multiple Platform Support**:
+  - Azure Static Web Apps (default)
+  - GitHub Pages
+  - Netlify
+  - AWS S3 + CloudFront
+
+### Security
+
+- **CodeQL Analysis**: Weekly security scans
+- **Dependency Review**: Automated vulnerability checks on PRs
+- **License Compliance**: Blocks GPL/LGPL dependencies
+
+### Maintenance
+
+- **Stale Bot**: Automatically manages inactive issues and PRs
+
+### Setup Instructions
+
+1. **Enable GitHub Actions**:
+   - Go to repository Settings → Actions → General
+   - Enable "Allow all actions and reusable workflows"
+
+2. **Configure Secrets** (for deployment - optional):
+
+   ```
+   # Choose your deployment platform and add corresponding secrets:
+   AZURE_STATIC_WEB_APPS_API_TOKEN  # For Azure deployment
+   NETLIFY_AUTH_TOKEN + NETLIFY_SITE_ID  # For Netlify
+   AWS_ACCESS_KEY_ID + AWS_SECRET_ACCESS_KEY  # For AWS S3
+   ```
+
+3. **Customize Deployment**:
+   - Edit `.github/workflows/cd.yml`
+   - Uncomment your preferred deployment method
+   - Update `output_location` path if needed
+
+## �📦 Development
 
 ### Start Development Server
 
@@ -116,6 +178,58 @@ npm start
 ```
 
 Once running, navigate to `http://localhost:4200/`. The app will auto-reload on file changes.
+
+### Code Quality
+
+#### Linting & Formatting
+
+The project uses ESLint with Prettier integration for code quality and consistent formatting:
+
+```bash
+# Run linter
+npm run lint
+
+# Auto-fix linting issues
+npm run lint -- --fix
+
+# Format code with Prettier
+npm run format
+
+# Check formatting without changing files
+npm run format:check
+```
+
+**ESLint rules configured:**
+
+- Angular best practices (component selectors, lifecycle interfaces)
+- TypeScript strict rules
+- Accessibility checks for templates
+- Code quality standards (no-console, prefer-const, etc.)
+
+**Prettier configuration:**
+
+- Single quotes, semicolons, 100 character line width
+- Automatic formatting on save (if VS Code extension installed)
+- Consistent indentation and spacing
+
+**Viewing Errors in VS Code:**
+
+1. Press `Ctrl+Shift+M` (Windows/Linux) or `Cmd+Shift+M` (Mac) to open the **Problems** panel
+2. Or click **View → Problems** from the menu
+3. The Problems panel shows all ESLint errors and warnings with file locations
+4. Click any error to jump directly to that line in the code
+
+- Code quality standards (no-console, prefer-const, etc.)
+
+#### Testing
+
+```bash
+# Run tests
+npm test
+
+# Run tests with coverage
+npm test -- --coverage
+```
 
 ### Available Routes
 
@@ -249,6 +363,7 @@ npm test -- --coverage
 ```
 
 Target coverage goals:
+
 - **Statements**: > 80%
 - **Branches**: > 75%
 - **Functions**: > 80%
@@ -277,14 +392,11 @@ describe('MyComponent', () => {
 
   beforeEach(() => {
     mockService = {
-      getData: vi.fn()
+      getData: vi.fn(),
     };
 
     TestBed.configureTestingModule({
-      providers: [
-        MyComponent,
-        { provide: MyService, useValue: mockService }
-      ]
+      providers: [MyComponent, { provide: MyService, useValue: mockService }],
     });
 
     component = TestBed.inject(MyComponent);
@@ -296,9 +408,9 @@ describe('MyComponent', () => {
 
   it('should load data on init', () => {
     vi.spyOn(mockService, 'getData').mockReturnValue(of([]));
-    
+
     component.ngOnInit();
-    
+
     expect(mockService.getData).toHaveBeenCalled();
   });
 });
@@ -316,8 +428,9 @@ describe('MyComponent', () => {
 
 2. **CORS Configuration**
    Your backend MUST allow requests from Angular dev server.
-   
+
    In your .NET API `Program.cs`:
+
    ```csharp
    builder.Services.AddCors(options =>
    {
@@ -329,7 +442,7 @@ describe('MyComponent', () => {
                  .AllowCredentials();
        });
    });
-   
+
    app.UseCors("AllowAngular");
    ```
 
@@ -380,6 +493,7 @@ If your backend uses a different port:
 ### Default Test Credentials
 
 If using [CleanApiTemplate](https://github.com/paz-dev-com/CleanApiTemplate):
+
 - Username: `admin`
 - Password: `Admin@123`
 

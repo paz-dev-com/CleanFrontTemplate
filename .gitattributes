@@ -1,0 +1,5 @@
+# Force CRLF line endings for all text files
+* text eol=crlf
+
+# Ensure shell scripts use LF (for CI/CD compatibility)
+*.sh text eol=lf
