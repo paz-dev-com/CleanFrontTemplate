@@ -39,7 +39,7 @@ jobs:
           NODE_ENV: production
 
       - name: Run tests
-        run: npm test -- --run
+        run: npm test -- --watch=false
 
     # ============================================================================
     # DEPLOYMENT CONFIGURATION
@@ -127,4 +127,3 @@ jobs:
     #   run: |
     #     aws s3 sync ./dist/clean-front-template/browser s3://${{ secrets.S3_BUCKET }} --delete
     #     aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
-
